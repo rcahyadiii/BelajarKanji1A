@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>漢字 — Belajar Kanji</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@600;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f3ece0;
+  --paper-2:#ece2d2;
+  --card:#fbf7ef;
+  --ink:#262220;
+  --ink-soft:#5d554d;
+  --ink-faint:#9a9085;
+  --shu:#c8412c;        /* vermilion 朱 */
+  --shu-deep:#a8311f;
+  --indigo:#2f4a5a;     /* 藍 */
+  --gold:#c69a4a;
+  --green:#5b7d54;
+  --line:#d8ccb8;
+  --shadow:rgba(60,45,30,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  font-family:"Zen Kaku Gothic New",sans-serif;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(200,65,44,.05), transparent 40%),
+    radial-gradient(circle at 88% 82%, rgba(47,74,90,.06), transparent 42%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 0h40v40H0z' fill='none'/%3E%3Ccircle cx='1' cy='1' r='.6' fill='%23000' opacity='.025'/%3E%3C/svg%3E");
+  color:var(--ink);
+  line-height:1.5;
+  overflow-x:hidden;
+  min-height:100%;
+}
+
+/* ====== HEADER ====== */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(243,236,224,.86);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.bar{max-width:1100px;margin:0 auto;padding:14px 20px 0;}
+.brand{display:flex;align-items:center;gap:14px;}
+.seal{
+  width:46px;height:46px;flex:none;border-radius:8px;
+  background:var(--shu);color:#fff;
+  display:grid;place-items:center;
+  font-family:"Zen Old Mincho",serif;font-weight:900;font-size:24px;
+  box-shadow:0 4px 12px rgba(168,49,31,.35), inset 0 0 0 2px rgba(255,255,255,.15);
+  transform:rotate(-3deg);
+}
+.title h1{font-family:"Shippori Mincho",serif;font-weight:800;font-size:21px;letter-spacing:.5px;line-height:1.1;}
+.title p{font-size:11.5px;color:var(--ink-soft);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+
+nav{
+  display:flex;gap:4px;margin-top:12px;overflow-x:auto;
+  scrollbar-width:none;-ms-overflow-style:none;padding-bottom:0;
+}
+nav::-webkit-scrollbar{display:none;}
+.tab{
+  flex:none;border:none;background:none;cursor:pointer;
+  font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:13px;
+  color:var(--ink-soft);padding:11px 15px 13px;position:relative;white-space:nowrap;
+  display:flex;align-items:center;gap:7px;transition:color .2s;
+}
+.tab .kj{font-family:"Zen Old Mincho",serif;font-size:16px;color:var(--shu);transition:color .2s;}
+.tab:hover{color:var(--ink);}
+.tab.active{color:var(--ink);}
+.tab.active::after{
+  content:"";position:absolute;left:12px;right:12px;bottom:0;height:3px;
+  background:var(--shu);border-radius:3px 3px 0 0;
+}
+
+/* ====== PAGE ====== */
+main{max-width:1100px;margin:0 auto;padding:26px 20px 90px;}
+.page{display:none;animation:fade .45s ease both;}
+.page.show{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+.page-head{margin-bottom:22px;}
+.eyebrow{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:3px;color:var(--shu);text-transform:uppercase;}
+.page-head h2{font-family:"Shippori Mincho",serif;font-size:clamp(26px,6vw,40px);font-weight:800;line-height:1.05;margin-top:6px;}
+.page-head h2 .jp{display:block;font-family:"Zen Old Mincho",serif;font-size:.55em;color:var(--ink-faint);font-weight:700;letter-spacing:6px;margin-top:4px;}
+.page-head .lead{color:var(--ink-soft);font-size:14px;max-width:560px;margin-top:10px;}
+
+/* control row */
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0;}
+.btn{
+  font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:13px;cursor:pointer;
+  border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);
+  padding:10px 18px;border-radius:40px;transition:.15s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px var(--shadow);}
+.btn:active{transform:translateY(0);}
+.btn.ghost{background:transparent;color:var(--ink);}
+.btn.shu{background:var(--shu);border-color:var(--shu);color:#fff;}
+.btn.shu:hover{background:var(--shu-deep);border-color:var(--shu-deep);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+
+.chip-group{display:flex;gap:6px;flex-wrap:wrap;}
+.seg{
+  font-family:"Zen Kaku Gothic New";font-weight:700;font-size:12.5px;cursor:pointer;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink-soft);
+  padding:8px 14px;border-radius:30px;transition:.15s;
+}
+.seg.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.seg:hover{border-color:var(--ink);}
+
+.pill{font-family:"DM Mono",monospace;font-size:12px;background:var(--paper-2);border:1px solid var(--line);padding:6px 12px;border-radius:20px;color:var(--ink-soft);}
+.pill b{color:var(--shu);}
+
+/* ====== FLASHCARD ====== */
+.deck{display:flex;flex-direction:column;align-items:center;gap:20px;}
+.flashcard{
+  width:min(440px,100%);height:300px;perspective:1500px;cursor:pointer;position:relative;
+}
+.fc-inner{position:absolute;inset:0;transition:transform .6s cubic-bezier(.4,.1,.3,1);transform-style:preserve-3d;}
+.flashcard.flip .fc-inner{transform:rotateY(180deg);}
+.fc-face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:22px;background:var(--card);border:1px solid var(--line);
+  box-shadow:0 18px 40px var(--shadow);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;
+}
+.fc-face::before{content:"";position:absolute;inset:10px;border:1px solid var(--line);border-radius:15px;pointer-events:none;}
+.fc-front{}
+.fc-front .kanji{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:clamp(70px,20vw,120px);line-height:1;color:var(--ink);}
+.fc-front .tap{position:absolute;bottom:22px;font-size:11px;letter-spacing:2px;color:var(--ink-faint);text-transform:uppercase;font-family:"DM Mono",monospace;}
+.fc-back{transform:rotateY(180deg);background:var(--ink);}
+.fc-back::before{border-color:rgba(255,255,255,.18);}
+.fc-back .reading{font-family:"Shippori Mincho",serif;font-size:clamp(34px,9vw,52px);font-weight:700;color:var(--paper);}
+.fc-back .meaning{margin-top:14px;font-size:15px;color:var(--gold);letter-spacing:1px;}
+.fc-back .small{margin-top:18px;font-family:"Zen Old Mincho",serif;font-size:24px;color:rgba(255,255,255,.5);}
+.fc-corner{position:absolute;top:14px;left:18px;font-family:"DM Mono",monospace;font-size:12px;color:var(--ink-faint);}
+.fc-back .fc-corner{color:rgba(255,255,255,.45);}
+.fc-cat{position:absolute;top:14px;right:18px;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--shu);font-weight:700;}
+.fc-back .fc-cat{color:var(--gold);}
+
+.deck-nav{display:flex;align-items:center;gap:18px;}
+.round-btn{
+  width:52px;height:52px;border-radius:50%;border:1.5px solid var(--ink);background:var(--card);
+  cursor:pointer;font-size:20px;color:var(--ink);display:grid;place-items:center;transition:.15s;
+}
+.round-btn:hover{background:var(--ink);color:var(--paper);}
+.counter{font-family:"DM Mono",monospace;font-size:15px;min-width:78px;text-align:center;color:var(--ink-soft);}
+.counter b{color:var(--ink);font-size:20px;}
+
+.progress{width:min(440px,100%);height:5px;background:var(--paper-2);border-radius:5px;overflow:hidden;}
+.progress span{display:block;height:100%;background:var(--shu);transition:width .3s;border-radius:5px;}
+
+/* ====== DROP / MATCH (page 2) ====== */
+.pool{
+  display:flex;flex-wrap:wrap;gap:10px;padding:16px;background:var(--paper-2);
+  border:1.5px dashed var(--line);border-radius:16px;margin-bottom:24px;min-height:64px;
+  align-content:flex-start;
+}
+.pool-label{width:100%;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);font-family:"DM Mono",monospace;margin-bottom:2px;}
+.tile{
+  font-family:"Zen Kaku Gothic New";font-weight:700;font-size:18px;
+  background:var(--card);border:1.5px solid var(--ink);border-radius:12px;
+  padding:9px 15px;cursor:grab;touch-action:none;user-select:none;
+  box-shadow:0 3px 0 var(--ink);transition:transform .12s, box-shadow .12s;color:var(--ink);
+}
+.tile .rb{font-family:"Zen Old Mincho",serif;}
+.tile:active{cursor:grabbing;}
+.tile.dragging-source{opacity:.3;}
+.drag-ghost{
+  position:fixed;z-index:999;pointer-events:none;
+  background:var(--card);border:1.5px solid var(--shu);border-radius:12px;
+  padding:9px 15px;font-family:"Zen Kaku Gothic New";font-weight:700;font-size:18px;
+  box-shadow:0 12px 28px var(--shadow);transform:scale(1.06) rotate(-2deg);color:var(--ink);
+}
+
+.sentence-list{display:flex;flex-direction:column;gap:14px;}
+.s-row{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;
+  box-shadow:0 4px 14px rgba(60,45,30,.05);
+}
+.s-jp{font-size:20px;font-weight:500;display:flex;align-items:center;flex-wrap:wrap;gap:6px;line-height:1.7;}
+.s-en{font-size:13px;color:var(--ink-soft);margin-top:8px;font-style:italic;}
+.s-en .tag{font-style:normal;font-family:"DM Mono",monospace;font-size:10px;background:var(--indigo);color:#fff;padding:2px 7px;border-radius:5px;margin-left:6px;letter-spacing:.5px;}
+.dropzone{
+  display:inline-flex;align-items:center;justify-content:center;min-width:118px;min-height:42px;
+  border-bottom:2.5px dashed var(--shu);padding:2px 8px;border-radius:6px;transition:.15s;vertical-align:middle;
+}
+.dropzone.drop-hover{background:rgba(200,65,44,.1);}
+.dropzone.filled{border-bottom-style:solid;}
+.dropzone .tile{box-shadow:0 2px 0 var(--ink);font-size:17px;padding:6px 12px;}
+.dropzone.correct{border-color:var(--green);background:rgba(91,125,84,.12);}
+.dropzone.correct .tile{border-color:var(--green);box-shadow:0 2px 0 var(--green);}
+.dropzone.wrong{border-color:var(--shu);background:rgba(200,65,44,.12);}
+.dropzone.wrong .tile{border-color:var(--shu);box-shadow:0 2px 0 var(--shu);animation:shake .4s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+
+/* ====== QUIZ (page 3) ====== */
+.quiz-wrap{max-width:560px;margin:0 auto;}
+.q-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:30px 26px;box-shadow:0 18px 40px var(--shadow);text-align:center;position:relative;}
+.q-num{font-family:"DM Mono",monospace;font-size:12px;color:var(--ink-faint);letter-spacing:2px;}
+.q-kanji{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:clamp(80px,22vw,130px);line-height:1.05;margin:6px 0 20px;}
+.q-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.opt{
+  font-family:"Zen Kaku Gothic New";font-weight:700;font-size:15px;cursor:pointer;text-align:left;
+  background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;transition:.15s;
+  display:flex;align-items:center;gap:10px;color:var(--ink);
+}
+.opt .lt{font-family:"DM Mono",monospace;font-weight:500;width:24px;height:24px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;font-size:12px;flex:none;color:var(--ink-soft);}
+.opt:hover:not(:disabled){border-color:var(--ink);transform:translateY(-2px);}
+.opt.correct{background:rgba(91,125,84,.16);border-color:var(--green);}
+.opt.correct .lt{background:var(--green);color:#fff;}
+.opt.wrong{background:rgba(200,65,44,.14);border-color:var(--shu);}
+.opt.wrong .lt{background:var(--shu);color:#fff;}
+.opt:disabled{cursor:default;}
+.q-foot{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px;}
+.scorebox{display:flex;gap:18px;}
+.scorebox .s{font-family:"DM Mono",monospace;font-size:13px;color:var(--ink-soft);}
+.scorebox .s b{font-size:22px;display:block;color:var(--ink);}
+.scorebox .s.ok b{color:var(--green);}
+.scorebox .s.no b{color:var(--shu);}
+.q-result{text-align:center;padding:40px 20px;}
+.q-result .big{font-family:"Shippori Mincho",serif;font-size:60px;font-weight:800;color:var(--shu);}
+.q-result p{color:var(--ink-soft);margin:12px 0 22px;font-size:16px;}
+
+/* ====== WRITE (page 5) ====== */
+.write-card{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;
+  box-shadow:0 14px 34px var(--shadow);max-width:620px;margin:0 auto;text-align:center;
+}
+.w-prompt{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);font-family:"DM Mono",monospace;}
+.w-reading{font-family:"Shippori Mincho",serif;font-size:clamp(30px,8vw,46px);font-weight:700;margin:8px 0 6px;}
+.w-en{color:var(--ink-soft);font-size:13px;margin-bottom:22px;}
+.w-slots{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:74px;margin-bottom:8px;}
+.slot{
+  width:64px;height:64px;border:2px dashed var(--line);border-radius:14px;
+  display:grid;place-items:center;transition:.15s;background:var(--paper);
+}
+.slot.drop-hover{border-color:var(--shu);background:rgba(200,65,44,.08);}
+.slot .tile{box-shadow:0 3px 0 var(--ink);width:100%;height:100%;display:grid;place-items:center;padding:0;font-size:30px;font-family:"Zen Old Mincho",serif;border-radius:11px;}
+.slot.correct{border-style:solid;border-color:var(--green);}
+.slot.correct .tile{border-color:var(--green);box-shadow:0 3px 0 var(--green);}
+.slot.wrong{border-style:solid;border-color:var(--shu);}
+.slot.wrong .tile{border-color:var(--shu);box-shadow:0 3px 0 var(--shu);}
+.w-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:18px;background:var(--paper-2);border:1.5px dashed var(--line);border-radius:16px;margin:18px 0;min-height:70px;align-content:center;}
+.w-pool .tile{font-size:30px;font-family:"Zen Old Mincho",serif;width:60px;height:60px;display:grid;place-items:center;padding:0;border-radius:12px;}
+.feedback{font-family:"Shippori Mincho",serif;font-weight:700;font-size:18px;min-height:26px;margin-top:6px;}
+.feedback.ok{color:var(--green);}
+.feedback.no{color:var(--shu);}
+
+.hint{font-size:12.5px;color:var(--ink-faint);display:flex;align-items:center;gap:6px;justify-content:center;margin-top:10px;}
+
+footer{text-align:center;padding:30px 20px 50px;color:var(--ink-faint);font-size:12px;font-family:"DM Mono",monospace;letter-spacing:1px;}
+.kana-toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);font-weight:700;cursor:pointer;}
+.kana-toggle input{display:none;}
+.kana-toggle .sw{width:38px;height:22px;background:var(--line);border-radius:20px;position:relative;transition:.2s;flex:none;}
+.kana-toggle .sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;}
+.kana-toggle input:checked + .sw{background:var(--shu);}
+.kana-toggle input:checked + .sw::after{transform:translateX(16px);}
+
+@media(max-width:520px){
+  .q-options{grid-template-columns:1fr;}
+  .flashcard{height:260px;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">
+      <div class="seal">漢</div>
+      <div class="title">
+        <h1>Belajar Kanji</h1>
+        <p>Kanji Learning Studio</p>
+      </div>
+    </div>
+    <nav id="nav">
+      <button class="tab active" data-page="p1"><span class="kj">一</span>Angka &amp; Tanggal</button>
+      <button class="tab" data-page="p2"><span class="kj">文</span>Lengkapi Kalimat</button>
+      <button class="tab" data-page="p3"><span class="kj">意</span>Arti Kanji</button>
+      <button class="tab" data-page="p4"><span class="kj">読</span>Flashcard L1–3</button>
+      <button class="tab" data-page="p5"><span class="kj">書</span>Tulis Kanji</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- PAGE 1 -->
+  <section class="page show" id="p1">
+    <div class="page-head">
+      <div class="eyebrow">Lembar 01 · Flashcard</div>
+      <h2>Angka, Tanggal &amp; Penghitung<span class="jp">かず・ひづけ・かぞえかた</span></h2>
+      <p class="lead">Ketuk kartu untuk membalik dan melihat bacaannya. Pilih kategori, lalu gunakan tombol untuk berpindah kartu.</p>
+    </div>
+    <div class="controls">
+      <div class="chip-group" id="p1-cats"></div>
+      <button class="btn ghost" id="p1-shuffle">↺ Acak</button>
+    </div>
+    <div class="deck">
+      <div class="progress"><span id="p1-prog"></span></div>
+      <div class="flashcard" id="p1-card">
+        <div class="fc-inner">
+          <div class="fc-face fc-front">
+            <span class="fc-corner" id="p1-corner"></span>
+            <span class="fc-cat" id="p1-catlabel"></span>
+            <span class="kanji" id="p1-kanji"></span>
+            <span class="tap">ketuk untuk membalik</span>
+          </div>
+          <div class="fc-face fc-back">
+            <span class="fc-corner" id="p1-corner-b"></span>
+            <span class="fc-cat" id="p1-catlabel-b"></span>
+            <span class="reading" id="p1-reading"></span>
+            <span class="meaning" id="p1-meaning"></span>
+          </div>
+        </div>
+      </div>
+      <div class="deck-nav">
+        <button class="round-btn" id="p1-prev">‹</button>
+        <div class="counter"><b id="p1-cur">1</b> / <span id="p1-tot">10</span></div>
+        <button class="round-btn" id="p1-next">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 2 -->
+  <section class="page" id="p2">
+    <div class="page-head">
+      <div class="eyebrow">Lembar 02 · Drag &amp; Drop</div>
+      <h2>Lengkapi Kalimat<span class="jp">ぶんを かんせいさせよう</span></h2>
+      <p class="lead">Seret kata kerja dari kotak di bawah ke tempat yang kosong dalam kalimat. Cocokkan dengan arti bahasa Inggrisnya.</p>
+    </div>
+    <div class="controls">
+      <span class="pill">Terisi <b id="p2-done">0</b> / 10</span>
+      <button class="btn shu" id="p2-check">✓ Periksa Jawaban</button>
+      <button class="btn ghost" id="p2-reset">↺ Ulangi</button>
+    </div>
+    <div class="pool" id="p2-pool"><div class="pool-label">Kata Kerja (どうし)</div></div>
+    <div class="sentence-list" id="p2-list"></div>
+  </section>
+
+  <!-- PAGE 3 -->
+  <section class="page" id="p3">
+    <div class="page-head">
+      <div class="eyebrow">Lembar 03 · Pilihan Ganda</div>
+      <h2>Pilih Arti Kanji<span class="jp">かんじの いみを えらぼう</span></h2>
+      <p class="lead">Pilih arti yang benar untuk setiap kanji. 50 soal diacak setiap putaran.</p>
+    </div>
+    <div class="quiz-wrap" id="p3-wrap"></div>
+  </section>
+
+  <!-- PAGE 4 -->
+  <section class="page" id="p4">
+    <div class="page-head">
+      <div class="eyebrow">Lembar 04 · Flashcard</div>
+      <h2>Baca Kanji — Lesson 1–3<span class="jp">かんじを よもう</span></h2>
+      <p class="lead">Pilih lesson, ketuk kartu untuk melihat cara baca (furigana). Cocok untuk latihan membaca.</p>
+    </div>
+    <div class="controls">
+      <div class="chip-group" id="p4-lessons"></div>
+      <button class="btn ghost" id="p4-shuffle">↺ Acak</button>
+    </div>
+    <div class="deck">
+      <div class="progress"><span id="p4-prog"></span></div>
+      <div class="flashcard" id="p4-card">
+        <div class="fc-inner">
+          <div class="fc-face fc-front">
+            <span class="fc-corner" id="p4-corner"></span>
+            <span class="kanji" id="p4-kanji" style="font-size:clamp(34px,9vw,58px);line-height:1.3;"></span>
+            <span class="tap">ketuk untuk membalik</span>
+          </div>
+          <div class="fc-face fc-back">
+            <span class="fc-corner" id="p4-corner-b"></span>
+            <span class="reading" id="p4-reading" style="font-size:clamp(26px,7vw,40px);"></span>
+          </div>
+        </div>
+      </div>
+      <div class="deck-nav">
+        <button class="round-btn" id="p4-prev">‹</button>
+        <div class="counter"><b id="p4-cur">1</b> / <span id="p4-tot">48</span></div>
+        <button class="round-btn" id="p4-next">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 5 -->
+  <section class="page" id="p5">
+    <div class="page-head">
+      <div class="eyebrow">Lembar 05 · Drag &amp; Drop</div>
+      <h2>Tulis Kanji<span class="jp">かんじを かこう</span></h2>
+      <p class="lead">Dibaca menurut hiragana yang diberikan, susun kartu kanji ke dalam kotak secara berurutan untuk membentuk kata yang benar.</p>
+    </div>
+    <div class="controls">
+      <div class="counter" style="min-width:auto"><b id="p5-cur">1</b> / <span id="p5-tot">30</span></div>
+      <button class="btn shu" id="p5-check">✓ Periksa</button>
+      <button class="btn ghost" id="p5-clear">↺ Kosongkan</button>
+      <button class="btn" id="p5-next">Berikutnya ›</button>
+    </div>
+    <div class="write-card">
+      <div class="w-prompt">Bacaan (ひらがな)</div>
+      <div class="w-reading" id="p5-reading"></div>
+      <div class="w-en" id="p5-en"></div>
+      <div class="w-slots" id="p5-slots"></div>
+      <div class="w-pool" id="p5-pool"></div>
+      <div class="feedback" id="p5-feedback"></div>
+      <div class="hint">💡 Seret kartu kanji ke kotak. Ketuk kartu di kotak untuk mengembalikannya.</div>
+    </div>
+  </section>
+</main>
+
+<footer>漢字 KANJI STUDIO · dibuat untuk latihan · 楽しく勉強しましょう</footer>
+
+<script>
+/* ============ HELPERS ============ */
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* Pointer-based drag that works on touch + mouse */
+let suppressClick=false;
+function makeDraggable(el,onDrop){
+  el.addEventListener('pointerdown',e=>{
+    if(el.dataset.locked==='1')return;
+    e.preventDefault();
+    const startX=e.clientX, startY=e.clientY; let moved=false;
+    const rect=el.getBoundingClientRect();
+    const ghost=el.cloneNode(true);
+    ghost.className='drag-ghost';
+    ghost.style.width=rect.width+'px';ghost.style.height=rect.height+'px';
+    document.body.appendChild(ghost);
+    el.classList.add('dragging-source');
+    const ox=e.clientX-rect.left, oy=e.clientY-rect.top;
+    const move=ev=>{
+      if(Math.abs(ev.clientX-startX)>4||Math.abs(ev.clientY-startY)>4)moved=true;
+      ghost.style.left=(ev.clientX-ox)+'px';
+      ghost.style.top=(ev.clientY-oy)+'px';
+      ghost.style.display='none';
+      const u=document.elementFromPoint(ev.clientX,ev.clientY);
+      ghost.style.display='';
+      $$('.drop-hover').forEach(d=>d.classList.remove('drop-hover'));
+      const dz=u&&u.closest('.dropzone,.slot');
+      if(dz&&!dz.dataset.locked)dz.classList.add('drop-hover');
+    };
+    const up=ev=>{
+      document.removeEventListener('pointermove',move);
+      document.removeEventListener('pointerup',up);
+      ghost.style.display='none';
+      const u=document.elementFromPoint(ev.clientX,ev.clientY);
+      ghost.remove();
+      el.classList.remove('dragging-source');
+      $$('.drop-hover').forEach(d=>d.classList.remove('drop-hover'));
+      const dz=u&&u.closest('.dropzone,.slot');
+      if(dz&&!dz.dataset.locked){onDrop(el,dz);suppressClick=true;setTimeout(()=>suppressClick=false,350);}
+    };
+    move(e);
+    document.addEventListener('pointermove',move);
+    document.addEventListener('pointerup',up);
+  });
+}
+
+/* ============ NAV ============ */
+$$('.tab').forEach(t=>t.addEventListener('click',()=>{
+  $$('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  $$('.page').forEach(p=>p.classList.remove('show'));
+  $('#'+t.dataset.page).classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ============ DATA ============ */
+// Page 1 — numbers / dates / months / counters
+const P1={
+  date:[['一日','ついたち'],['二日','ふつか'],['三日','みっか'],['四日','よっか'],['五日','いつか'],['六日','むいか'],['七日','なのか'],['八日','ようか'],['九日','ここのか'],['十日','とおか']],
+  month:[['一月','いちがつ'],['二月','にがつ'],['三月','さんがつ'],['四月','しがつ'],['五月','ごがつ'],['六月','ろくがつ'],['七月','しちがつ'],['八月','はちがつ'],['九月','くがつ'],['十月','じゅうがつ']],
+  count:[['一つ','ひとつ'],['二つ','ふたつ'],['三つ','みっつ'],['四つ','よっつ'],['五つ','いつつ'],['六つ','むっつ'],['七つ','ななつ'],['八つ','やっつ'],['九つ','ここのつ'],['十','とお']]
+};
+const P1MEAN={date:'tanggal',month:'bulan',count:'penghitung benda'};
+const P1LABEL={date:'Tanggal · ひづけ',month:'Bulan · つき',count:'Hitungan · かぞえ'};
+
+// Page 2 — complete the sentence (verbs)
+const P2=[
+  {pre:'じゅぎょうが ',ans:'終わります',post:'。',en:'The class ends.',tag:''},
+  {pre:'ともだちが ',ans:'来ます',post:'。',en:'My friend comes.',tag:''},
+  {pre:'がっこうへ ',ans:'行きます',post:'。',en:'I go to school.',tag:''},
+  {pre:'うちへ ',ans:'帰ります',post:'。',en:'I go home.',tag:''},
+  {pre:'レストランで ',ans:'働きます',post:'。',en:'I work at a restaurant.',tag:''},
+  {pre:'まいにち 11 じに ',ans:'寝ます',post:'。',en:'I go to bed at 11 every day.',tag:''},
+  {pre:'かいぎが ',ans:'始まります',post:'。',en:'The meeting starts.',tag:'intransitive'},
+  {pre:'べんきょうを ',ans:'始めます',post:'。',en:'I start studying.',tag:'transitive'},
+  {pre:'あさ 7 じに ',ans:'起きます',post:'。',en:'I get up at 7 in the morning.',tag:'intransitive'},
+  {pre:'ちちを ',ans:'起こします',post:'。',en:'I wake up my father.',tag:'transitive'}
+];
+
+// Page 3 — kanji meanings (50)
+const P3=[
+  ['強','kuat'],['一','satu'],['川','sungai'],['帰','kembali'],['黒','hitam'],['毎','setiap'],['山','gunung'],['始','mulai'],['黄','kuning'],['子','anak'],
+  ['雨','hujan'],['月','bulan (langit)'],['白','putih'],['七','tujuh'],['働','bekerja'],['色','warna'],['左','kiri'],['上','atas'],['寝','tidur'],['田','sawah'],
+  ['男','laki-laki'],['休','istirahat'],['火','api'],['万','sepuluh ribu'],['週','minggu'],['行','pergi / melakukan'],['六','enam'],['森','hutan (lebat)'],['女','perempuan'],['赤','merah'],
+  ['好','suka'],['千','seribu'],['水','air'],['車','roda / mobil'],['下','bawah'],['円','lingkaran / yen'],['二','dua'],['林','hutan (kecil)'],['米','beras'],['日','hari / matahari'],
+  ['曜','hari (dalam minggu)'],['明','terang'],['青','biru'],['土','tanah'],['中','tengah'],['勉','berusaha'],['金','logam / emas / uang'],['九','sembilan'],['来','datang'],['八','delapan']
+];
+
+// Page 4 — read the kanji (Lesson 1-3)
+const P4={
+  l1:[['子どもが一人','こどもが ひとり'],['日本人','にほんじん'],['電車','でんしゃ'],['女の子','おんなのこ'],['男子トイレ','だんしトイレ'],['アメリカの車','アメリカの くるま'],['二人','ふたり'],['男の人','おとこのひと'],['彼女','かのじょ'],['大人','おとな'],['タイの米','タイの こめ'],['山田さん','やまださん'],['人々','ひとびと'],['三人','さんにん'],['雨の日','あめのひ'],['アジアの川','アジアの かわ'],['田んぼ','たんぼ'],['人形','にんぎょう'],['アルプスの山','アルプスの やま'],['中川さん','なかがわさん'],['下着','したぎ'],['左と右','ひだりと みぎ'],['下手な','へたな'],['世界中','せかいじゅう'],['上着','うわぎ'],['上と下','うえと した'],['以上','いじょう'],['中学校','ちゅうがっこう'],['午前中','ごぜんちゅう'],['上手な','じょうずな'],['昼休み','ひるやすみ'],['明るい','あかるい'],['森さん','もりさん'],['休みます','やすみます'],['説明します','せつめいします'],['林さん','はやしさん'],['好きな','すきな'],['森の中','もりのなか'],['大好きな','だいすきな'],['大人','おとな'],['上手な','じょうずな'],['下手な','へたな'],['森と林','もりと はやし'],['田中さんと山田さん','たなかさんと やまださん'],['ナイル川','ナイルがわ'],['日本人','にほんじん'],['一人','ひとり'],['女の人と男の子','おんなのひとと おとこのこ']],
+  l2:[['四時','よじ'],['二月二日','にがつ ふつか'],['三人','さんにん'],['二十歳','はたち'],['五月五日','ごがつ いつか'],['四月二十日','しがつ はつか'],['四月四日','しがつ よっか'],['一月一日','いちがつ ついたち'],['二人','ふたり'],['三月三日','さんがつ みっか'],['七時','しちじ'],['十一月一日','じゅういちがつ ついたち'],['九時','くじ'],['八月八日','はちがつ ようか'],['十二月二十日','じゅうにがつ はつか'],['九月九日','くがつ ここのか'],['六月六日','ろくがつ むいか'],['十月十日','じゅうがつ とおか'],['七月七日','しちがつ なのか'],['八時','はちじ'],['九十万人','きゅうじゅうまんにん'],['オレンジ色','オレンジいろ'],['一万九千円','いちまん きゅうせん えん'],['千六百円','せん ろっぴゃく えん'],['八百屋','やおや'],['三千円','さんぜん えん'],['七百万人','ななひゃくまんにん'],['八千円','はっせん えん'],['六千八百円','ろくせん はっぴゃく えん'],['三百円','さんびゃく えん'],['その黄色いシャツは いくらですか。','その きいろい シャツは いくらですか。'],['あの赤ちゃんは 女の子です。','あの あかちゃんは おんなのこです。'],['私は白が好きです。','わたしは しろが すきです。'],['この黒いペンは 山田さんのです。','この くろい ペンは やまださんのです。'],['田中さんの車は 青いです。','たなかさんの くるまは あおいです。'],['一人','ひとり'],['二月二十日','にがつ はつか'],['四人','よにん'],['七月五日','しちがつ いつか'],['一万三千六百五十円','いちまん さんぜん ろっぴゃく ごじゅう えん'],['三つ','みっつ'],['六つ','むっつ'],['赤と青','あかと あお'],['九つ','ここのつ'],['八百屋','やおや']],
+  l3:[['木曜日','もくようび'],['お金持ち','おかねもち'],['先月','せんげつ'],['火曜日','かようび'],['火事','かじ'],['水曜日','すいようび'],['正月','しょうがつ'],['金曜日','きんようび'],['月曜日','げつようび'],['水道','すいどう'],['来週','らいしゅう'],['今日','きょう'],['三月三日','さんがつ みっか'],['日曜日','にちようび'],['お土産','おみやげ'],['毎日','まいにち'],['今週','こんしゅう'],['土曜日','どようび'],['昨日','きのう'],['一月一日','いちがつ ついたち'],['終わります','おわります'],['行きます','いきます'],['来ます','きます'],['急行','きゅうこう'],['帰ります','かえります'],['来る','くる'],['始めます','はじめます'],['銀行','ぎんこう'],['来ない','こない'],['来月','らいげつ'],['毎日 勉強します。','まいにち べんきょうします。'],['月曜日から 金曜日まで 働きます。','げつようびから きんようびまで はたらきます。'],['毎朝 7時に 起きます。','まいあさ しちじに おきます。'],['昨日 11時に 寝ました。','きのう じゅういちじに ねました。'],['今日は 風が 強いです。','きょうは かぜが つよいです。'],['一月一日','いちがつ ついたち'],['きれいな月','きれいな つき'],['タバコの火','タバコの ひ'],['川の水','かわの みず'],['木の下','きの した'],['始まります','はじまります'],['お土産','おみやげ'],['休みの日','やすみのひ'],['月曜日','げつようび'],['毎週','まいしゅう']]
+};
+const P4LABEL={l1:'Lesson 1',l2:'Lesson 2',l3:'Lesson 3'};
+
+// Page 5 — write the kanji (reading -> kanji tiles)
+const P5=[
+  {r:'やすみ',w:'休み',en:'libur / istirahat',t:['休','み']},
+  {r:'なか',w:'中',en:'tengah',t:['中']},
+  {r:'くるま',w:'車',en:'mobil',t:['車']},
+  {r:'あめ',w:'雨',en:'hujan',t:['雨']},
+  {r:'こめ',w:'米',en:'beras',t:['米']},
+  {r:'あかるい',w:'明るい',en:'terang',t:['明','る','い']},
+  {r:'みぎとひだり',w:'右と左',en:'kanan dan kiri',t:['右','と','左']},
+  {r:'うえとした',w:'上と下',en:'atas dan bawah',t:['上','と','下']},
+  {r:'すきな',w:'好きな',en:'(yang) disukai',t:['好','き','な']},
+  {r:'おとこのひと',w:'男の人',en:'laki-laki',t:['男','の','人']},
+  {r:'くがつとおか',w:'九月十日',en:'10 September',t:['九','月','十','日']},
+  {r:'きいろ',w:'黄色',en:'warna kuning',t:['黄','色']},
+  {r:'ふたつ',w:'二つ',en:'dua (benda)',t:['二','つ']},
+  {r:'しろいくるま',w:'白い車',en:'mobil putih',t:['白','い','車']},
+  {r:'さんがつよっか',w:'三月四日',en:'4 Maret',t:['三','月','四','日']},
+  {r:'しがつようか',w:'四月八日',en:'8 April',t:['四','月','八','日']},
+  {r:'ごせんえん',w:'五千円',en:'5.000 yen',t:['五','千','円']},
+  {r:'ひゃくまんにん',w:'百万人',en:'satu juta orang',t:['百','万','人']},
+  {r:'しちがつここのか',w:'七月九日',en:'9 Juli',t:['七','月','九','日']},
+  {r:'ひとり',w:'一人',en:'satu orang / sendiri',t:['一','人']},
+  {r:'いきます',w:'行きます',en:'pergi',t:['行','き','ま','す']},
+  {r:'きます',w:'来ます',en:'datang',t:['来','ま','す']},
+  {r:'かえります',w:'帰ります',en:'pulang',t:['帰','り','ま','す']},
+  {r:'はじめます',w:'始めます',en:'memulai (transitif)',t:['始','め','ま','す']},
+  {r:'おわります',w:'終わります',en:'berakhir',t:['終','わ','り','ま','す']},
+  {r:'おきます',w:'起きます',en:'bangun',t:['起','き','ま','す']},
+  {r:'ねます',w:'寝ます',en:'tidur',t:['寝','ま','す']},
+  {r:'はたらきます',w:'働きます',en:'bekerja',t:['働','き','ま','す']},
+  {r:'べんきょうします',w:'勉強します',en:'belajar',t:['勉','強','し','ま','す']},
+  {r:'おかね',w:'お金',en:'uang',t:['お','金']}
+];
+
+/* ============ PAGE 1 — FLASHCARD ============ */
+let p1cat='date', p1idx=0, p1deck=P1.date.slice();
+function p1build(){
+  const wrap=$('#p1-cats');wrap.innerHTML='';
+  Object.keys(P1LABEL).forEach(k=>{
+    const b=document.createElement('button');
+    b.className='seg'+(k===p1cat?' active':'');
+    b.textContent=P1LABEL[k];
+    b.onclick=()=>{p1cat=k;p1deck=P1[k].slice();p1idx=0;p1build();p1render();};
+    wrap.appendChild(b);
+  });
+}
+function p1render(){
+  const [k,r]=p1deck[p1idx];
+  $('#p1-card').classList.remove('flip');
+  $('#p1-kanji').textContent=k;
+  $('#p1-reading').textContent=r;
+  $('#p1-meaning').textContent=P1MEAN[p1cat];
+  const lab=P1LABEL[p1cat].split(' · ')[0];
+  $('#p1-catlabel').textContent=lab;$('#p1-catlabel-b').textContent=lab;
+  const c='No.'+String(p1idx+1).padStart(2,'0');
+  $('#p1-corner').textContent=c;$('#p1-corner-b').textContent=c;
+  $('#p1-cur').textContent=p1idx+1;$('#p1-tot').textContent=p1deck.length;
+  $('#p1-prog').style.width=((p1idx+1)/p1deck.length*100)+'%';
+}
+$('#p1-card').onclick=()=>$('#p1-card').classList.toggle('flip');
+$('#p1-prev').onclick=()=>{p1idx=(p1idx-1+p1deck.length)%p1deck.length;p1render();};
+$('#p1-next').onclick=()=>{p1idx=(p1idx+1)%p1deck.length;p1render();};
+$('#p1-shuffle').onclick=()=>{p1deck=shuffle(p1deck);p1idx=0;p1render();};
+p1build();p1render();
+
+/* ============ PAGE 2 — DROP / MATCH ============ */
+function p2init(){
+  const list=$('#p2-list');list.innerHTML='';
+  P2.forEach((s,i)=>{
+    const row=document.createElement('div');row.className='s-row';
+    row.innerHTML=`<div class="s-jp">${s.pre}<span class="dropzone" data-i="${i}"></span>${s.post}</div>
+      <div class="s-en">${s.en}${s.tag?`<span class="tag">${s.tag}</span>`:''}</div>`;
+    list.appendChild(row);
+  });
+  const pool=$('#p2-pool');
+  pool.innerHTML='<div class="pool-label">Kata Kerja (どうし)</div>';
+  shuffle(P2.map((s,i)=>i)).forEach(i=>{
+    const t=makeTile(P2[i].ans,i,'p2');
+    pool.appendChild(t);
+  });
+  updateP2done();
+}
+function makeTile(text,ans,page){
+  const t=document.createElement('div');t.className='tile';
+  t.innerHTML=`<span class="rb">${text}</span>`;t.dataset.ans=ans;
+  makeDraggable(t,(el,dz)=>p2drop(el,dz));
+  return t;
+}
+function p2drop(tile,dz){
+  // return any existing tile in dz to pool
+  const existing=dz.querySelector('.tile');
+  if(existing)$('#p2-pool').appendChild(existing);
+  dz.appendChild(tile);
+  dz.classList.add('filled');dz.classList.remove('correct','wrong');
+  updateP2done();
+}
+// allow clicking a placed tile to send it back to pool
+document.addEventListener('click',e=>{
+  if(suppressClick)return;
+  const t=e.target.closest('.dropzone .tile');
+  if(t&&t.closest('#p2')){const dz=t.closest('.dropzone');$('#p2-pool').appendChild(t);dz.classList.remove('filled','correct','wrong');updateP2done();}
+});
+function updateP2done(){
+  $('#p2-done').textContent=$$('#p2 .dropzone .tile').length;
+}
+$('#p2-check').onclick=()=>{
+  $$('#p2 .dropzone').forEach(dz=>{
+    const t=dz.querySelector('.tile');
+    dz.classList.remove('correct','wrong');
+    if(t){ +t.dataset.ans===+dz.dataset.i ? dz.classList.add('correct') : dz.classList.add('wrong'); }
+  });
+};
+$('#p2-reset').onclick=p2init;
+p2init();
+
+/* ============ PAGE 3 — QUIZ ============ */
+let p3order=[], p3i=0, p3ok=0, p3no=0;
+function p3start(){
+  p3order=shuffle(P3.map((_,i)=>i));p3i=0;p3ok=0;p3no=0;p3render();
+}
+function p3render(){
+  const wrap=$('#p3-wrap');
+  if(p3i>=p3order.length){
+    const pct=Math.round(p3ok/P3.length*100);
+    wrap.innerHTML=`<div class="q-card q-result">
+      <div class="big">${pct}%</div>
+      <p>Benar ${p3ok} dari ${P3.length} soal.<br>${pct>=80?'すごい！Luar biasa! 🎉':pct>=50?'がんばって！Terus berlatih.':'Jangan menyerah, coba lagi!'}</p>
+      <button class="btn shu" onclick="p3start()">↺ Main Lagi</button></div>`;
+    return;
+  }
+  const idx=p3order[p3i];
+  const [kanji,correct]=P3[idx];
+  // distractors
+  const others=shuffle(P3.filter((_,i)=>i!==idx)).slice(0,3).map(x=>x[1]);
+  const opts=shuffle([correct,...others]);
+  const letters=['A','B','C','D'];
+  wrap.innerHTML=`<div class="q-card">
+    <div class="q-num">SOAL ${p3i+1} / ${P3.length}</div>
+    <div class="q-kanji">${kanji}</div>
+    <div class="q-options">${opts.map((o,j)=>`<button class="opt" data-correct="${o===correct?1:0}"><span class="lt">${letters[j]}</span>${o}</button>`).join('')}</div>
+    <div class="q-foot">
+      <div class="scorebox">
+        <div class="s ok">BENAR<b id="p3-ok">${p3ok}</b></div>
+        <div class="s no">SALAH<b id="p3-no">${p3no}</b></div>
+      </div>
+      <button class="btn ghost" id="p3-skip" disabled>Berikutnya ›</button>
+    </div></div>`;
+  $$('#p3 .opt').forEach(b=>b.onclick=()=>{
+    if($$('#p3 .opt')[0].disabled)return;
+    $$('#p3 .opt').forEach(x=>{x.disabled=true;if(+x.dataset.correct)x.classList.add('correct');});
+    if(+b.dataset.correct){p3ok++;}else{b.classList.add('wrong');p3no++;}
+    $('#p3-ok').textContent=p3ok;$('#p3-no').textContent=p3no;
+    const sk=$('#p3-skip');sk.disabled=false;sk.classList.add('shu');
+    sk.onclick=()=>{p3i++;p3render();};
+    setTimeout(()=>{ if($('#p3-skip'))$('#p3-skip').focus(); },50);
+  });
+}
+p3start();
+
+/* ============ PAGE 4 — FLASHCARD L1-3 ============ */
+let p4lesson='l1', p4idx=0, p4deck=P4.l1.slice();
+function p4build(){
+  const wrap=$('#p4-lessons');wrap.innerHTML='';
+  Object.keys(P4LABEL).forEach(k=>{
+    const b=document.createElement('button');
+    b.className='seg'+(k===p4lesson?' active':'');
+    b.textContent=P4LABEL[k]+' ('+P4[k].length+')';
+    b.onclick=()=>{p4lesson=k;p4deck=P4[k].slice();p4idx=0;p4build();p4render();};
+    wrap.appendChild(b);
+  });
+}
+function p4render(){
+  const [k,r]=p4deck[p4idx];
+  $('#p4-card').classList.remove('flip');
+  $('#p4-kanji').textContent=k;
+  $('#p4-reading').textContent=r;
+  const c=P4LABEL[p4lesson]+' · '+String(p4idx+1).padStart(2,'0');
+  $('#p4-corner').textContent=c;$('#p4-corner-b').textContent=c;
+  $('#p4-cur').textContent=p4idx+1;$('#p4-tot').textContent=p4deck.length;
+  $('#p4-prog').style.width=((p4idx+1)/p4deck.length*100)+'%';
+}
+$('#p4-card').onclick=()=>$('#p4-card').classList.toggle('flip');
+$('#p4-prev').onclick=()=>{p4idx=(p4idx-1+p4deck.length)%p4deck.length;p4render();};
+$('#p4-next').onclick=()=>{p4idx=(p4idx+1)%p4deck.length;p4render();};
+$('#p4-shuffle').onclick=()=>{p4deck=shuffle(p4deck);p4idx=0;p4render();};
+p4build();p4render();
+
+/* ============ PAGE 5 — WRITE THE KANJI ============ */
+let p5i=0;
+function p5render(){
+  const q=P5[p5i];
+  $('#p5-reading').textContent=q.r;
+  $('#p5-en').textContent=q.en;
+  $('#p5-cur').textContent=p5i+1;$('#p5-tot').textContent=P5.length;
+  $('#p5-feedback').textContent='';$('#p5-feedback').className='feedback';
+  // slots
+  const slots=$('#p5-slots');slots.innerHTML='';
+  q.t.forEach((_,j)=>{
+    const s=document.createElement('div');s.className='slot';s.dataset.pos=j;
+    slots.appendChild(s);
+  });
+  // pool (correct tiles + occasionally 1 decoy)
+  const pool=$('#p5-pool');pool.innerHTML='';
+  let tiles=q.t.map((ch,j)=>({ch,id:j}));
+  // add a decoy distractor if word length<=4 to add difficulty
+  const decoys=['日','月','人','一','二','三','中','子','大','小','車','水','火'].filter(d=>!q.t.includes(d));
+  if(q.t.length<=4){ tiles.push({ch:decoys[Math.floor(Math.random()*decoys.length)],id:'x'}); }
+  shuffle(tiles).forEach(o=>pool.appendChild(p5tile(o.ch,o.id)));
+}
+function p5tile(ch,id){
+  const t=document.createElement('div');t.className='tile';t.textContent=ch;t.dataset.tid=id;
+  makeDraggable(t,(el,dz)=>p5drop(el,dz));
+  return t;
+}
+function p5drop(tile,slot){
+  if(!slot.classList.contains('slot'))return;
+  const existing=slot.querySelector('.tile');
+  if(existing)$('#p5-pool').appendChild(existing);
+  slot.appendChild(tile);
+  slot.classList.remove('correct','wrong');
+}
+// click placed tile -> back to pool
+$('#p5-slots').addEventListener('click',e=>{
+  if(suppressClick)return;
+  const t=e.target.closest('.slot .tile');
+  if(t){const s=t.closest('.slot');$('#p5-pool').appendChild(t);s.classList.remove('correct','wrong');$('#p5-feedback').textContent='';}
+});
+$('#p5-check').onclick=()=>{
+  const q=P5[p5i];let allRight=true,allFilled=true;
+  $$('#p5 .slot').forEach((s,j)=>{
+    const t=s.querySelector('.tile');
+    s.classList.remove('correct','wrong');
+    if(!t){allFilled=false;allRight=false;return;}
+    if(t.textContent===q.t[j]){s.classList.add('correct');}
+    else{s.classList.add('wrong');allRight=false;}
+  });
+  const fb=$('#p5-feedback');
+  if(!allFilled){fb.textContent='Isi semua kotak dulu ya.';fb.className='feedback no';}
+  else if(allRight){fb.textContent='正解！Benar — '+q.w;fb.className='feedback ok';}
+  else{fb.textContent='ちがう… Coba lagi.';fb.className='feedback no';}
+};
+$('#p5-clear').onclick=()=>{
+  $$('#p5 .slot .tile').forEach(t=>$('#p5-pool').appendChild(t));
+  $$('#p5 .slot').forEach(s=>s.classList.remove('correct','wrong'));
+  $('#p5-feedback').textContent='';
+};
+$('#p5-next').onclick=()=>{p5i=(p5i+1)%P5.length;p5render();};
+p5render();
+</script>
+</body>
+</html>
